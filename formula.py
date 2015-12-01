@@ -1,8 +1,20 @@
 class Formulae(object):
     def common_dividend_yield(self, last_dividend, ticker_price):
+        if not isinstance(last_dividend, (int, long, float)):
+            raise TypeError('Last dividend must be a valid number.')
+        if not isinstance(ticker_price, (int, long, float)):
+            raise TypeError('Ticker price must be a valid number.')
+
         return float(last_dividend) / ticker_price
 
     def preferred_dividend_yield(self, fixed_dividend, par_value, ticker_price):
+        if not isinstance(fixed_dividend, (int, long, float)):
+            raise TypeError('Fixed dividend must be a valid number.')
+        if not isinstance(par_value, (int, long, float)):
+            raise TypeError('Par value must be a valid number.')
+        if not isinstance(ticker_price, (int, long, float)):
+            raise TypeError('Ticker price must be a valid number.')
+
         return (fixed_dividend * par_value) / ticker_price
 
     def pe_ratio(self, dividend, ticker_price):
