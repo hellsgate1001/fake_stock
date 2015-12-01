@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from formula import Formulae
+from formula.Formulae import (common_dividend_yield, preferred_dividend_yield,
+    pe_ratio, geometric_mean, stock_price)
 
 SAMPLE = [
     ['TEA', 'Common', 0, None, 100],
@@ -20,34 +21,33 @@ class Stock(object):
         super(Stock, self).__init__()
         (self.symbol, self.type, self.last_dividend, self.fixed_dividend,
             self.par_value = stocks)
-        self.formulae = Formulae
 
     def calculate_dividend_yield(self):
         if self.type.lower() == 'common':
-            return self.formulae.common_dividend_yield(
+            return common_dividend_yield(
                 dividend, ticker
             )
         elif self.type.lower() == 'preferred':
-            return self.formulae.preferred_dividend_yield(
+            return preferred_dividend_yield(
                 dividend, par, ticker
             )
 
     def calculate_pe_ratio(self, dividend, ticker_price):
-        return self.formulae.pe_ratio(dividend, ticker_price)
+        return pe_ratio(dividend, ticker_price)
 
-    def record_trade(self, quantity, trade_type, price):
+    def record_trade(self, quantity, trade_type, ticker_price):
         if not isinstance(quantity, (int, long)):
             raise TypeError('Quantity must be an integer.')
         if trade_type.lower() not in ['buy','sell']:
             raise ValueError("Trade type must be one of 'buy' or 'sell'.")
-        if not isinstance(price, float):
+        if not isinstance(ticker_price, float):
             raise TypeError('Price must be a float.')
 
         trade = [
             datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
             quantity,
             trade_type,
-            price
+            ticker_price
         ]
         trades.append(trade)
 
@@ -57,13 +57,14 @@ class Stock(object):
 
         calculation_trades = []
         for trade in trades:
-            if since is None or trade[0] >= since:
+            trade_datetime = datetime.strptime(trade[0], '%Y-%m-%dT%H:%M:%S')
+            if since is None or trade_datetime[0] >= since:
                 calculation_trades.append(trade)
 
-        return self.formulae.stock_price(calculation_trades)
+        return stock_price(calculation_trades)
 
     def calculate_all_share_index(self):
         prices = []
         for trade in trades:
             prices.append(trade[3])
-        return self.formulae.geometric_mean(prices)
+        return geometric_mean(prices)
