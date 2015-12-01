@@ -15,6 +15,8 @@ trades = []
 
 class Stock(object):
     def __init__(self, stock, *args, **kwargs):
+        if stock[1].lower() not in ['common', 'preferred']:
+
         super(Stock, self).__init__()
         (self.symbol, self.type, self.last_dividend, self.fixed_dividend,
             self.par_value = stocks)
@@ -52,5 +54,12 @@ class Stock(object):
     def calculate_stock_price(self, trades):
         return self.formulae.stock_price(trades)
 
-    def calculate_all_share_index(self, prices):
+    def calculate_all_share_index(self, since=None):
+        if since is not None and not isinstance(since, datetime):
+            raise TypeError('Since must be a datetime.')
+
+        prices = []
+        for trade in trades:
+            if since is None or trade[0] >= since:
+                prices.append(trade[3])
         return self.formulae.geometric_mean(prices)
