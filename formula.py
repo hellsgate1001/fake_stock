@@ -15,6 +15,11 @@ class Formulae(object):
         ttl = 0
         qty = 0
         for trade in trades:
+            if not isinstance(trade[0], (float, int, long)):
+                raise TypeError('Trade price must be a valid number.')
+            if not isinstance(trade[1], (int, long)):
+                raise TypeError('Trade quantity must be a valid integer.')
+
             ttl += (trade[0] * trade[1])
             qty += trade[1]
 
