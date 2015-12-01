@@ -27,7 +27,7 @@ class Formulae(object):
 
     def geometric_mean(self, prices):
         for price in prices:
-            if not isinstance(price (int, long, float)):
+            if not isinstance(price, (int, long, float)):
                 raise TypeError('Prices must be a valid number.')
 
         return reduce(lambda x, y: x * y, prices) ** (1.0 / len(prices))
