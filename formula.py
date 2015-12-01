@@ -1,0 +1,21 @@
+class Formulae(object):
+    def common_dividend_yield(self, last_dividend, ticker_price):
+        return float(last_dividend) / ticker_price
+
+    def preferred_dividend_yield(self, fixed_dividend, par_value, ticker_price):
+        return (fixed_dividend * par_value) / ticker_price
+
+    def pe_ratio(self, dividend, ticker_price):
+        return float(ticker_price) / dividend
+
+    def geometric_mean(self, prices):
+        return reduce(lambda x, y: x * y, prices) ** (1.0 / len(prices))
+
+    def stock_price(self, trades):
+        ttl = 0
+        qty = 0
+        for trade in trades:
+            ttl += (trade[0] * trade[1])
+            qty += trade[1]
+
+        return float(ttl) / qty
