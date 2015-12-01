@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from formula.Formulae import (common_dividend_yield, preferred_dividend_yield,
+from formula import (common_dividend_yield, preferred_dividend_yield,
     pe_ratio, geometric_mean, stock_price)
 
 SAMPLE = [
@@ -16,13 +16,23 @@ trades = []
 
 class Stock(object):
     def __init__(self, stock, *args, **kwargs):
+        if not isinstance(stock[0], str):
+            raise TypeError('Please provide the stock symbol as a string.')
+        if not isinstance(stock[1], str):
+            raise TypeError('Please provide the trade type as a string.')
         if stock[1].lower() not in ['common', 'preferred']:
             raise ValueError("Trade type must be one of 'common' or 'preferred'")
-        super(Stock, self).__init__()
-        (self.symbol, self.type, self.last_dividend, self.fixed_dividend,
-            self.par_value = stocks)
+        if not isinstance(stock[2], (int, long)):
+            raise TypeError('Last dividend must be a valid integer.')
+        if stock[3] is not None and not isinstance(stock[3], (float, int, long)):
+            raise TypeError('Fixed dividend must be a valid number if it is provided.')
+        if not isinstance(stock[4], (int, long)):
+            raise TypeError('Par Value must be a valid integer.')
 
-    def calculate_dividend_yield(self):
+        super(Stock, self).__init__()
+        self.symbol, self.type, self.last_dividend, self.fixed_dividend, self.par_value = stock
+
+    def calculate_dividend_yield(self, dividend, ticker, par=None):
         if self.type.lower() == 'common':
             return common_dividend_yield(
                 dividend, ticker
