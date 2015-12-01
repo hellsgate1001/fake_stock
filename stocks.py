@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from formula import Formulae
 
 SAMPLE = [
@@ -7,6 +9,8 @@ SAMPLE = [
     ['GIN', 'Preferred', 8, 0.02, 100],
     ['JOE', 'Common', 13, None, 250],
 ]
+
+trades = []
 
 
 class Stock(object):
@@ -30,7 +34,20 @@ class Stock(object):
         return self.formulae.pe_ratio(dividend, ticker)
 
     def record_trade(self, quantity, trade_type, price):
-        return
+        if not isinstance(quantity, (int, long)):
+            raise TypeError('Quantity must be an integer.')
+        if trade_type.lower() not in ['buy','sell']:
+            raise ValueError("Trade type must be one of 'buy' or 'sell'.")
+        if not isinstance(price, float):
+            raise TypeError('Price must be a float.')
+
+        trade = [
+            datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+            quantity,
+            trade_type,
+            price
+        ]
+        trades.append(trade)
 
     def calculate_stock_price(self):
         return
