@@ -6,6 +6,11 @@ class Formulae(object):
         return (fixed_dividend * par_value) / ticker_price
 
     def pe_ratio(self, dividend, ticker_price):
+        if not isinstance(dividend, (float, int, long)):
+            raise TypeError('Dividend must be a valid  number.')
+        if not isinstance(ticker_price, (float, int, long)):
+            raise TypeError('Ticker price must be a valid number.')
+
         return float(ticker_price) / dividend
 
     def geometric_mean(self, prices):
