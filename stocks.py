@@ -49,8 +49,8 @@ class Stock(object):
         ]
         trades.append(trade)
 
-    def calculate_stock_price(self):
-        return
+    def calculate_stock_price(self, trades):
+        return self.formulae.stock_price(trades)
 
-    def calculate_all_share_index(self):
-        return
+    def calculate_all_share_index(self, prices):
+        return self.formulae.geometric_mean(prices)
