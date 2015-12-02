@@ -1,12 +1,9 @@
 from datetime import datetime, timedelta
 import random
 
-from faker import Faker
-
 from stocks import SAMPLE, Stock
 
 def generate_trades(number=100):
-    fake = Faker()
     fake_trades = []
 
     start_date = datetime.now() + timedelta(hours=-1)
