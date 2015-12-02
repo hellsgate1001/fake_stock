@@ -1,3 +1,5 @@
+from mpmath import mp
+
 def common_dividend_yield(last_dividend, ticker_price):
     if not isinstance(last_dividend, (int, long, float)):
         raise TypeError('Last dividend must be a valid number.')
@@ -29,14 +31,17 @@ def geometric_mean(prices):
         if not isinstance(price, (int, long, float)):
             raise TypeError('Prices must be a valid number.')
 
-    return reduce(lambda x, y: x * y, prices) ** (1.0 / len(prices))
+    # We're using the mp module here to avoid the python error
+    # "OverflowError: long int too large to convert to float"
+    # See http://stackoverflow.com/a/29866503
+    return reduce(lambda x, y: x * y, prices) ** mp.mpf(1.0 / len(prices))
 
 def stock_price(trades):
     ttl = 0
     qty = 0
     for trade in trades:
         if not isinstance(trade[0], (float, int, long)):
-            raise TypeError('Trade price must be a valid number.')
+            raise TypeError('Trade price must be a valid number (%s).' % trade[0])
         if not isinstance(trade[1], (int, long)):
             raise TypeError('Trade quantity must be a valid integer.')
 
